@@ -1,5 +1,7 @@
 services:
   - type: web
-    name: jueguito-de-amor
-    runtime: static
-    staticPublishPath: .
+    name: jueguito
+    runtime: node
+    buildCommand: npm install
+    startCommand: npm start
+    plan: free
