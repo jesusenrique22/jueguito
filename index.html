@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <title>Para ti</title>
+  <meta name="description" content="Un juego hecho para ti" />
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>✦</text></svg>" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500&family=Outfit:wght@400;500;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div id="bg-hearts" aria-hidden="true"></div>
+  <div class="vignette" aria-hidden="true"></div>
+
+  <button id="music-btn" class="music-btn" title="Música" aria-label="Música">
+    <svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor" aria-hidden="true"><path d="M12 3v10.55A4 4 0 1 0 14 17V7h4V3h-6z"/></svg>
+  </button>
+
+  <div id="progress" class="progress" aria-hidden="true">
+    <span></span><span></span><span></span><span></span><span></span>
+  </div>
+
+  <main>
+    <section class="screen active" id="s-intro">
+      <div class="card">
+        <p class="kicker">Un juego para ti</p>
+        <h1>Hola, <span class="her-name"></span></h1>
+        <p>Hice este juego solo para ti, la mujer más hermosa del mundo.</p>
+        <p>Tiene 5 niveles, y al final te espera una <b>sorpresa</b>.</p>
+        <p class="small">¿Lista para jugar?</p>
+        <button class="btn" data-go="s-catch">Empezar</button>
+      </div>
+    </section>
+
+    <section class="screen" id="s-catch">
+      <div class="card wide">
+        <p class="kicker">Nivel 01</p>
+        <h2>Atrapa mi amor</h2>
+        <p class="small">Mueve la canasta con el dedo o el mouse. Atrapa <b><span id="catch-goal"></span></b> corazones y esquiva los rotos.</p>
+        <div class="score">Corazones: <b id="catch-score">0</b> / <span class="catch-goal-2"></span></div>
+        <div id="arena" class="arena">
+          <div id="basket" class="basket">🧺</div>
+          <div id="arena-start" class="arena-overlay">
+            <button class="btn" id="catch-start">Comenzar</button>
+          </div>
+        </div>
+        <div id="catch-done" class="done hidden">
+          <p>Atrapaste todo mi amor. Aunque en realidad ya lo tenías desde el principio.</p>
+          <button class="btn" data-go="s-quiz">Siguiente</button>
+        </div>
+      </div>
+    </section>
+
+    <section class="screen" id="s-quiz">
+      <div class="card">
+        <p class="kicker">Nivel 02</p>
+        <h2>¿Cuánto nos conocemos?</h2>
+        <p class="small" id="quiz-counter"></p>
+        <h3 id="quiz-question"></h3>
+        <div id="quiz-options" class="options"></div>
+        <p id="quiz-feedback" class="feedback"></p>
+        <div id="quiz-done" class="done hidden">
+          <p>Perfecta. Como siempre.</p>
+          <button class="btn" data-go="s-memory">Siguiente</button>
+        </div>
+      </div>
+    </section>
+
+    <section class="screen" id="s-memory">
+      <div class="card wide">
+        <p class="kicker">Nivel 03</p>
+        <h2>Memoria del amor</h2>
+        <p class="small">Encuentra todas las parejas... como tú y yo.</p>
+        <div class="score">Intentos: <b id="mem-moves">0</b></div>
+        <div id="memory" class="memory"></div>
+        <div id="mem-done" class="done hidden">
+          <p>Todas las parejas juntas. Pero ninguna tan linda como nosotros.</p>
+          <button class="btn" data-go="s-reasons">Siguiente</button>
+        </div>
+      </div>
+    </section>
+
+    <section class="screen" id="s-reasons">
+      <div class="card wide">
+        <p class="kicker">Nivel 04</p>
+        <h2>Razones por las que te amo</h2>
+        <p class="small">Toca cada corazón para descubrir una razón.</p>
+        <div id="reasons" class="reasons"></div>
+        <div id="reason-box" class="reason-box">Toca un corazón.</div>
+        <div id="reasons-done" class="done hidden">
+          <p>Y hay millones de razones más, pero no cabían en la pantalla.</p>
+          <button class="btn" data-go="s-letter">Siguiente</button>
+        </div>
+      </div>
+    </section>
+
+    <section class="screen" id="s-letter">
+      <div class="card">
+        <p class="kicker">Nivel 05</p>
+        <h2>Una carta para ti</h2>
+        <p class="small" id="letter-hint">Toca el sobre para abrirlo.</p>
+        <div id="envelope" class="envelope">
+          <div class="env-back"></div>
+          <div class="env-flap"></div>
+          <div class="env-front"></div>
+          <div class="env-heart">♡</div>
+        </div>
+        <div id="letter" class="letter hidden">
+          <p id="letter-text"></p>
+          <p class="signature">— <span class="his-name"></span></p>
+        </div>
+        <div id="letter-done" class="done hidden">
+          <button class="btn" data-go="s-question">Tengo una pregunta...</button>
+        </div>
+      </div>
+    </section>
+
+    <section class="screen" id="s-question">
+      <div class="card">
+        <p class="kicker">La pregunta</p>
+        <h1><span class="her-name"></span>,</h1>
+        <h2 class="question">¿Quieres salir en una cita conmigo?</h2>
+        <div class="answer-buttons">
+          <button class="btn yes" id="btn-yes">Sí</button>
+          <button class="btn no" id="btn-no">No</button>
+        </div>
+        <p id="no-msg" class="feedback"></p>
+      </div>
+    </section>
+
+    <section class="screen" id="s-yes">
+      <div class="card">
+        <p class="kicker">Entonces es un sí</p>
+        <h1>Sabía que dirías que sí</h1>
+        <p>Me acabas de hacer el hombre más feliz del mundo.</p>
+        <div class="date-card">
+          <h3>Nuestra cita</h3>
+          <p>Fecha · <b id="date-fecha"></b></p>
+          <p>Hora · <b id="date-hora"></b></p>
+          <p>Lugar · <b id="date-lugar"></b></p>
+          <p>Plan · <b id="date-plan"></b></p>
+        </div>
+        <p class="small">Guarda una captura y mándamela. Quiero tener la prueba.</p>
+        <p class="te-amo">Te amo</p>
+        <button class="btn secondary" id="btn-restart">Volver al inicio</button>
+      </div>
+    </section>
+  </main>
+
+  <script src="script.js"></script>
+</body>
+</html>
