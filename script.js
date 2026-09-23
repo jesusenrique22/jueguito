@@ -201,10 +201,19 @@ function setProgress(n) {
   });
 }
 
-function go(id) {
+let transitioning = false;
+
+function activate(id) {
   $$(".screen").forEach((s) => s.classList.remove("active"));
-  $("#" + id).classList.add("active");
-  window.scrollTo({ top: 0, behavior: "smooth" });
+  const next = $("#" + id);
+  next.classList.add("active");
+  const card = next.querySelector(".card");
+  if (card) {
+    card.style.animation = "none";
+    void card.offsetWidth;
+    card.style.animation = "";
+  }
+  window.scrollTo({ top: 0, behavior: "instant" in window ? "instant" : "auto" });
   if (id in levelOf) setProgress(levelOf[id]);
   if (id === "s-question" || id === "s-yes") setProgress(5);
   if (id === "s-quiz") startQuiz();
@@ -214,9 +223,41 @@ function go(id) {
   if (id === "s-question") startQuestion();
 }
 
+function go(id) {
+  if (transitioning) return;
+  const current = document.querySelector(".screen.active");
+  if (current && current.id === id) return;
+
+  const next = $("#" + id);
+  const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  if (!current || reduce) {
+    activate(id);
+    return;
+  }
+
+  transitioning = true;
+  const overlay = $("#transition");
+  $("#tr-kicker").textContent = (next.querySelector(".kicker") || {}).textContent || "";
+  $("#tr-title").textContent = (next.querySelector("h1, h2") || {}).innerText || "";
+  overlay.classList.remove("hide");
+  overlay.classList.add("show");
+  sfx.good();
+  burst(window.innerWidth / 2, window.innerHeight / 2, 18);
+
+  setTimeout(() => activate(id), 480);
+  setTimeout(() => {
+    overlay.classList.remove("show");
+    overlay.classList.add("hide");
+  }, 980);
+  setTimeout(() => {
+    overlay.classList.remove("show", "hide");
+    transitioning = false;
+  }, 1450);
+}
+
 document.addEventListener("click", (e) => {
   const btn = e.target.closest("[data-go]");
-  if (!btn) return;
+  if (!btn || transitioning) return;
   sfx.pop();
   if (btn.dataset.go === "s-catch" && !musicOn && !$("#music-btn").dataset.touched) {
     $("#music-btn").dataset.touched = "1";
